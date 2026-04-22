@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ReviewBrain — AI-Powered Review Management for Local Businesses</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#FAFAF7;--card:#FFF;--text:#1A1A17;--muted:#6B6B60;--accent:#1B6B4A;--al:#E8F5EE;--ad:#0F4D33;--warm:#F5E6D3;--wd:#8B6914;--wl:#FBF4EA;--border:#E8E8E2;--star:#E8A318;--red:#D44030;--rl:#FDF0EE}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+.c{max-width:720px;margin:0 auto;padding:0 24px}
+nav{padding:20px 0;display:flex;align-items:center;justify-content:space-between}
+.logo{font-family:'Fraunces',serif;font-weight:600;font-size:20px;color:var(--ad);display:flex;align-items:center;gap:8px}
+.logo-dot{width:10px;height:10px;background:var(--accent);border-radius:50%}
+.nav-tag{font-size:12px;background:var(--al);color:var(--ad);padding:4px 12px;border-radius:20px;font-weight:500}
+h2.sh{font-family:'Fraunces',serif;font-size:28px;font-weight:600;text-align:center;margin-bottom:12px}
+.sub-h{text-align:center;color:var(--muted);font-size:16px;margin-bottom:32px;max-width:500px;margin-left:auto;margin-right:auto}
+.hero{padding:60px 0 40px;text-align:center}
+.hero-ey{font-size:13px;text-transform:uppercase;letter-spacing:2px;color:var(--accent);font-weight:700;margin-bottom:20px}
+.hero h1{font-family:'Fraunces',serif;font-size:clamp(28px,5.5vw,44px);font-weight:600;line-height:1.15;margin-bottom:20px}
+.hero h1 em{font-style:italic;color:var(--ad)}
+.hero>p{font-size:18px;line-height:1.6;color:var(--muted);max-width:540px;margin:0 auto 36px}
+.fw{max-width:440px;margin:0 auto 16px}
+.fr{display:flex;gap:8px}
+.fr input{flex:1;padding:14px 18px;border:1.5px solid var(--border);border-radius:12px;font-size:16px;font-family:inherit;background:var(--card);transition:border-color .2s}
+.fr input:focus{outline:none;border-color:var(--accent)}
+.fr input::placeholder{color:#B0B0A6}
+.fr button,.btn-main{padding:14px 28px;background:var(--ad);color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:600;font-family:inherit;cursor:pointer;white-space:nowrap;transition:background .2s,transform .1s}
+.fr button:hover,.btn-main:hover{background:var(--accent)}
+.fr button:active,.btn-main:active{transform:scale(0.97)}
+.fn{text-align:center;font-size:13px;color:var(--muted);margin-top:12px}
+.fn strong{color:var(--ad)}
+.sm{display:none;text-align:center;padding:20px;background:var(--al);border-radius:12px;max-width:440px;margin:0 auto}
+.sm p{color:var(--ad);font-weight:500;font-size:16px}
+.sm .sub{font-weight:400;font-size:14px;margin-top:8px;color:var(--muted)}
+.tb{display:flex;justify-content:center;gap:24px;flex-wrap:wrap;margin:24px auto 0;max-width:500px}
+.ti{font-size:13px;color:var(--muted);display:flex;align-items:center;gap:6px}
+.tc{color:var(--accent);font-weight:700;font-size:16px}
+
+/* DEMO */
+.demo-section{padding:48px 0}
+.demo-box{max-width:580px;margin:0 auto;background:var(--card);border-radius:16px;border:1.5px solid var(--border);overflow:hidden}
+.demo-nav{display:flex;border-bottom:1px solid var(--border);background:#FAFAF7}
+.demo-tab{flex:1;padding:12px;text-align:center;font-size:13px;font-weight:600;cursor:pointer;border-bottom:2px solid transparent;color:var(--muted);transition:all .2s}
+.demo-tab.active{color:var(--ad);border-bottom-color:var(--accent);background:var(--card)}
+.demo-tab:hover{color:var(--ad)}
+.demo-header{padding:14px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)}
+.demo-header span{font-size:13px;font-weight:500;color:var(--muted)}
+.demo-badge{font-size:11px;background:var(--al);color:var(--ad);padding:3px 10px;border-radius:8px;font-weight:600}
+.demo-stats{display:flex;gap:8px;padding:14px 20px;border-bottom:1px solid var(--border);background:#FAFAF7}
+.ds-card{flex:1;text-align:center;padding:8px;background:var(--card);border-radius:8px;border:1px solid var(--border)}
+.ds-card .ds-v{font-size:18px;font-weight:700;color:var(--text)}
+.ds-card .ds-l{font-size:11px;color:var(--muted)}
+.alert-bar{padding:10px 20px;background:var(--rl);display:flex;align-items:center;gap:8px;font-size:13px;color:#8B2218;font-weight:500;border-bottom:1px solid #F5C4B3;cursor:pointer}
+.alert-dot{width:8px;height:8px;background:var(--red);border-radius:50%;animation:pulse 1.5s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.rv{padding:20px;border-bottom:1px solid var(--border)}
+.rv:last-child{border-bottom:none}
+.rv-top{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.rv-av{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;color:#fff}
+.a1{background:#7B68AE}.a2{background:#C75B3F}.a3{background:#2E7D9B}
+.rv-nm{font-weight:500;font-size:14px}
+.rv-dt{font-size:12px;color:var(--muted)}
+.stars{color:var(--star);font-size:14px;letter-spacing:1px;margin-bottom:6px}
+.stars .e{color:#DDD}
+.rv-tx{font-size:14px;line-height:1.6;color:#444}
+.ai-rp{margin-top:12px;padding:14px 16px;background:var(--al);border-radius:10px;border-left:3px solid var(--accent)}
+.ai-rp.neg{background:var(--rl);border-left-color:var(--red)}
+.ai-lb{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--ad);margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.ai-rp.neg .ai-lb{color:#8B2218}
+.ai-rp p{font-size:13px;line-height:1.6;color:var(--ad)}
+.ai-rp.neg p{color:#6B1A12}
+.gen-btn{margin-top:10px;padding:8px 16px;background:var(--ad);color:#fff;border:none;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;transition:all .2s}
+.gen-btn:hover{background:var(--accent)}
+.gen-btn.done{background:var(--al);color:var(--ad);cursor:default}
+.typing{display:none;margin-top:12px;padding:14px 16px;background:var(--al);border-radius:10px;border-left:3px solid var(--accent)}
+.typing .dots{display:inline-flex;gap:4px}
+.typing .dots span{width:6px;height:6px;background:var(--accent);border-radius:50%;animation:bounce .6s infinite alternate}
+.typing .dots span:nth-child(2){animation-delay:.2s}
+.typing .dots span:nth-child(3){animation-delay:.4s}
+@keyframes bounce{to{opacity:.3;transform:translateY(-4px)}}
+
+/* Features */
+.feat{padding:48px 0}
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.fc{background:var(--card);border:1.5px solid var(--border);border-radius:14px;padding:22px 20px}
+.fc-i{font-size:24px;margin-bottom:10px}
+.fc h3{font-size:15px;font-weight:600;margin-bottom:4px}
+.fc p{font-size:13px;color:var(--muted);line-height:1.5}
+
+/* Who */
+.who{padding:40px 0;text-align:center}
+.wg{display:flex;flex-wrap:wrap;justify-content:center;gap:10px}
+.wt{background:var(--wl);border:1px solid #ECD9B8;border-radius:20px;padding:8px 18px;font-size:14px;color:var(--wd);font-weight:500}
+
+/* How */
+.how{padding:48px 0}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.sc{background:var(--card);border:1.5px solid var(--border);border-radius:14px;padding:24px 20px;text-align:center}
+.sn{width:32px;height:32px;border-radius:50%;background:var(--al);color:var(--ad);font-weight:700;font-size:14px;display:inline-flex;align-items:center;justify-content:center;margin-bottom:12px}
+.sc h3{font-size:15px;font-weight:600;margin-bottom:6px}
+.sc p{font-size:13px;color:var(--muted);line-height:1.5}
+
+/* Stats */
+.pain{padding:40px 0;text-align:center}
+.pg{display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:520px;margin:0 auto}
+.pi{background:var(--warm);border-radius:12px;padding:16px 18px;text-align:left}
+.pi .pl{font-size:13px;color:var(--wd);font-weight:600;margin-bottom:2px}
+.pi .pv{font-size:22px;font-weight:700;color:var(--text)}
+
+/* FAQ */
+.faq{padding:48px 0}
+.faq-item{background:var(--card);border:1.5px solid var(--border);border-radius:12px;margin-bottom:10px;overflow:hidden}
+.faq-q{padding:16px 20px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;font-weight:600;font-size:15px}
+.faq-q .arrow{transition:transform .2s;color:var(--muted);font-size:18px}
+.faq-item.open .faq-q .arrow{transform:rotate(45deg)}
+.faq-a{display:none;padding:0 20px 16px;font-size:14px;line-height:1.7;color:var(--muted)}
+.faq-item.open .faq-a{display:block}
+
+/* Pricing */
+.pricing{padding:40px 0 20px;text-align:center}
+.pc{max-width:420px;margin:0 auto;background:var(--card);border:2px solid var(--accent);border-radius:16px;padding:32px;position:relative}
+.pc-badge{position:absolute;top:-14px;left:50%;transform:translateX(-50%);background:var(--ad);color:#fff;font-size:12px;font-weight:600;padding:4px 16px;border-radius:20px;white-space:nowrap}
+.pc .old-price{font-size:20px;color:var(--muted);text-decoration:line-through;margin-bottom:4px}
+.pc .pa{font-family:'Fraunces',serif;font-size:52px;font-weight:600;color:var(--ad)}
+.pc .pa span{font-size:18px;font-weight:400;color:var(--muted)}
+.pc .pd{font-size:15px;color:var(--muted);margin:8px 0 20px;line-height:1.5}
+.pl{text-align:left;padding:0}
+.pl li{list-style:none;padding:6px 0;font-size:14px;color:var(--text);display:flex;align-items:center;gap:10px}
+.pl li::before{content:"";display:inline-block;width:18px;height:18px;background:var(--al);border-radius:50%;flex-shrink:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231B6B4A' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E");background-size:12px;background-repeat:no-repeat;background-position:center}
+.pt{margin-top:20px;font-size:13px;color:var(--ad);font-weight:600;background:var(--al);padding:8px 16px;border-radius:8px;display:inline-block}
+
+/* CTA */
+.cta{padding:48px 0;text-align:center}
+.cta p{color:var(--muted);font-size:16px;margin-bottom:24px;max-width:440px;margin-left:auto;margin-right:auto}
+
+/* Contact */
+.contact{padding:32px 0;text-align:center}
+.contact p{color:var(--muted);font-size:15px;margin-bottom:20px}
+.cc{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;max-width:480px;margin:0 auto}
+.ccd{background:var(--card);border:1.5px solid var(--border);border-radius:12px;padding:18px 24px;flex:1;min-width:200px}
+.ccd .cl{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+.ccd .cv{font-size:15px;font-weight:600;color:var(--ad)}
+.ccd a{color:var(--ad);text-decoration:none}
+.ccd a:hover{text-decoration:underline}
+
+/* Other businesses */
+.other{padding:32px 0;text-align:center;border-top:1px solid var(--border)}
+.other p.other-sub{color:var(--muted);font-size:14px;margin-bottom:20px}
+.ob{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;max-width:520px;margin:0 auto}
+.obc{background:var(--card);border:1.5px solid var(--border);border-radius:14px;padding:22px 24px;flex:1;min-width:220px;text-align:left}
+.obc h4{font-size:15px;font-weight:600;margin-bottom:4px}
+.obc .obd{font-size:13px;color:var(--muted);margin-bottom:10px;line-height:1.5}
+.obc a{font-size:13px;color:var(--ad);font-weight:600;text-decoration:none}
+.obc a:hover{text-decoration:underline}
+
+footer{padding:32px 0 40px;text-align:center}
+.fb{font-size:14px;color:var(--text);font-weight:500;margin-bottom:6px}
+.fb .ht{color:var(--red)}
+.fs{font-size:13px;color:var(--muted)}
+@media(max-width:600px){
+.fr{flex-direction:column}.fr button{width:100%}.steps{grid-template-columns:1fr}.fg{grid-template-columns:1fr}.pg{grid-template-columns:1fr}.hero{padding:40px 0 30px}.cc{flex-direction:column}.ob{flex-direction:column}.demo-stats{flex-wrap:wrap}
+}
+</style>
+</head>
+<body>
+<div class="c">
+
+<nav>
+<div class="logo"><span class="logo-dot"></span> ReviewBrain</div>
+<div class="nav-tag">Launching soon</div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+<div class="hero-ey">For local business owners</div>
+<h1>Every review deserves a reply. <em>Let AI handle it.</em></h1>
+<p>ReviewBrain pulls all your Google, Yelp &amp; Facebook reviews into one simple dashboard. Our AI writes personalized, professional replies in seconds. You just click send.</p>
+<div class="fw" id="fa1">
+<form id="wf1" action="https://formspree.io/f/xyklkbzv" method="POST">
+<div class="fr"><input type="email" name="email" placeholder="you@yourbusiness.com" required /><button type="submit">Join the waitlist</button></div>
+</form>
+<p class="fn"><strong>Free early access</strong> for the first 50 local businesses</p>
+</div>
+<div class="sm" id="sm1"><p>You're on the list!</p><p class="sub">We'll reach out soon to get you set up. Keep an eye on your inbox.</p></div>
+<div class="tb">
+<div class="ti"><span class="tc">&#10003;</span> 14-day free trial</div>
+<div class="ti"><span class="tc">&#10003;</span> No credit card needed</div>
+<div class="ti"><span class="tc">&#10003;</span> Cancel anytime</div>
+</div>
+</section>
+
+<!-- INTERACTIVE DEMO -->
+<section class="demo-section">
+<h2 class="sh">Try it yourself</h2>
+<p class="sub-h">Click "Generate Reply" on any review and watch the AI work its magic.</p>
+<div class="demo-box">
+<div class="demo-nav">
+<div class="demo-tab active" onclick="switchTab(this,'google')">Google Reviews</div>
+<div class="demo-tab" onclick="switchTab(this,'yelp')">Yelp</div>
+<div class="demo-tab" onclick="switchTab(this,'facebook')">Facebook</div>
+</div>
+<div class="demo-header">
+<span>Your Business &mdash; Dashboard</span>
+<span class="demo-badge">Interactive demo</span>
+</div>
+<div class="demo-stats">
+<div class="ds-card"><div class="ds-v">4.3</div><div class="ds-l">Avg rating</div></div>
+<div class="ds-card"><div class="ds-v">247</div><div class="ds-l">Total reviews</div></div>
+<div class="ds-card"><div class="ds-v">12</div><div class="ds-l">This month</div></div>
+<div class="ds-card"><div class="ds-v">68%</div><div class="ds-l">Replied</div></div>
+</div>
+<div class="alert-bar"><span class="alert-dot"></span> New negative review from Sarah R. &mdash; 2 stars &mdash; tap to see</div>
+
+<!-- Review 1 -->
+<div class="rv" id="rv1">
+<div class="rv-top">
+<div class="rv-av a1">JM</div>
+<div><div class="rv-nm">Jake M.</div><div class="rv-dt">2 days ago &middot; Google</div></div>
+</div>
+<div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+<div class="rv-tx">Absolutely love this place! The staff was incredibly friendly and the quality was top-notch. Already told all my friends about it. Will definitely be back every chance I get.</div>
+<div class="typing" id="tp1"><div class="ai-lb"><span>&#10024;</span> AI is writing a reply...</div><div class="dots"><span></span><span></span><span></span></div></div>
+<div class="ai-rp" id="rp1" style="display:none">
+<div class="ai-lb"><span>&#10024;</span> AI-generated reply &mdash; ready to send</div>
+<p>Thanks so much, Jake! It means the world to hear that. Our team works hard to make every visit great, and knowing you're spreading the word makes our day. We'll be ready for you next time!</p>
+</div>
+<button class="gen-btn" id="gb1" onclick="genReply(1)">&#10024; Generate Reply</button>
+</div>
+
+<!-- Review 2 -->
+<div class="rv" id="rv2">
+<div class="rv-top">
+<div class="rv-av a2">SR</div>
+<div><div class="rv-nm">Sarah R.</div><div class="rv-dt">5 days ago &middot; Google</div></div>
+</div>
+<div class="stars">&#9733;&#9733;<span class="e">&#9733;&#9733;&#9733;</span></div>
+<div class="rv-tx">Service was okay but we waited a really long time and nobody checked on us. Disappointed because I've heard great things from friends.</div>
+<div class="typing" id="tp2"><div class="ai-lb" style="color:#8B2218"><span>&#10024;</span> AI is writing a reply...</div><div class="dots"><span style="background:var(--red)"></span><span style="background:var(--red)"></span><span style="background:var(--red)"></span></div></div>
+<div class="ai-rp neg" id="rp2" style="display:none">
+<div class="ai-lb"><span>&#10024;</span> AI-generated reply &mdash; ready to send</div>
+<p>Sarah, I'm really sorry about the long wait and the lack of attention from our team &mdash; that's not the experience we want for anyone. I'd love the chance to make it right. Please reach out to us directly and we'll make sure your next visit is the one you deserve.</p>
+</div>
+<button class="gen-btn" id="gb2" onclick="genReply(2)">&#10024; Generate Reply</button>
+</div>
+
+<!-- Review 3 -->
+<div class="rv" id="rv3">
+<div class="rv-top">
+<div class="rv-av a3">DW</div>
+<div><div class="rv-nm">David W.</div><div class="rv-dt">1 week ago &middot; Google</div></div>
+</div>
+<div class="stars">&#9733;&#9733;&#9733;&#9733;<span class="e">&#9733;</span></div>
+<div class="rv-tx">Really solid experience overall. Great product, nice atmosphere. Only reason it's not 5 stars is parking was tricky. Would still recommend to anyone.</div>
+<div class="typing" id="tp3"><div class="ai-lb"><span>&#10024;</span> AI is writing a reply...</div><div class="dots"><span></span><span></span><span></span></div></div>
+<div class="ai-rp" id="rp3" style="display:none">
+<div class="ai-lb"><span>&#10024;</span> AI-generated reply &mdash; ready to send</div>
+<p>Thanks for the kind words, David! We appreciate the honest feedback on parking &mdash; we know it can be a challenge and we're looking into solutions. Glad you had a great experience overall, and thanks for recommending us!</p>
+</div>
+<button class="gen-btn" id="gb3" onclick="genReply(3)">&#10024; Generate Reply</button>
+</div>
+</div>
+<p style="text-align:center;font-size:13px;color:var(--muted);margin-top:16px">This is a preview of the actual ReviewBrain dashboard. The full app connects to your real Google reviews.</p>
+</section>
+
+<!-- FEATURES -->
+<section class="feat">
+<h2 class="sh">What ReviewBrain does for you</h2>
+<p class="sub-h">Everything you need to manage your online reputation &mdash; without hiring a marketing team.</p>
+<div class="fg">
+<div class="fc"><div class="fc-i">&#128232;</div><h3>All reviews, one dashboard</h3><p>See every Google, Yelp, and Facebook review in a single feed. No more logging into three different sites.</p></div>
+<div class="fc"><div class="fc-i">&#9889;</div><h3>AI writes your replies</h3><p>Our AI reads each review and writes a personalized, professional response that sounds like you &mdash; not a robot.</p></div>
+<div class="fc"><div class="fc-i">&#128276;</div><h3>Instant negative alerts</h3><p>Get notified immediately when a negative review comes in so you can respond before it scares away customers.</p></div>
+<div class="fc"><div class="fc-i">&#128200;</div><h3>Track your reputation</h3><p>See your average rating over time, how many reviews you're getting, and which ones still need a reply.</p></div>
+<div class="fc"><div class="fc-i">&#128338;</div><h3>5 minutes a week</h3><p>What used to take hours now takes minutes. Review the AI suggestions, edit if you want, and click send.</p></div>
+<div class="fc"><div class="fc-i">&#128231;</div><h3>Weekly email summary</h3><p>Every Monday, get a summary of your new reviews, your average rating, and how your reputation is trending.</p></div>
+</div>
+</section>
+
+<!-- WHO -->
+<section class="who">
+<h2 class="sh">Built for local businesses like yours</h2>
+<p class="sub-h">If customers leave you reviews, ReviewBrain is made for you.</p>
+<div class="wg">
+<span class="wt">Restaurants &amp; cafes</span><span class="wt">Hair salons &amp; spas</span><span class="wt">Dentists &amp; doctors</span><span class="wt">Auto repair shops</span><span class="wt">Coffee shops</span><span class="wt">Bars &amp; breweries</span><span class="wt">Gyms &amp; yoga studios</span><span class="wt">Pet groomers &amp; vets</span><span class="wt">Hotels &amp; lodges</span><span class="wt">Any local business</span>
+</div>
+</section>
+
+<!-- HOW -->
+<section class="how">
+<h2 class="sh">How it works</h2>
+<div class="steps">
+<div class="sc"><div class="sn">1</div><h3>Connect</h3><p>Link your Google Business page. Takes about 2 minutes to set up.</p></div>
+<div class="sc"><div class="sn">2</div><h3>Review</h3><p>See all your reviews in one dashboard. AI writes a personalized reply for each one.</p></div>
+<div class="sc"><div class="sn">3</div><h3>Reply</h3><p>Read the suggestion, edit if you want, then click send. Done in seconds.</p></div>
+</div>
+</section>
+
+<!-- STATS -->
+<section class="pain">
+<h2 class="sh">The review problem is real</h2>
+<p class="sub-h">For busy local business owners, keeping up is almost impossible.</p>
+<div class="pg">
+<div class="pi"><div class="pl">Unanswered reviews lose you</div><div class="pv">35% of customers</div></div>
+<div class="pi"><div class="pl">Time spent managing reviews</div><div class="pv">4+ hours/week</div></div>
+<div class="pi"><div class="pl">Businesses that reply see</div><div class="pv">12% more revenue</div></div>
+<div class="pi"><div class="pl">With ReviewBrain it takes</div><div class="pv">5 min/week</div></div>
+</div>
+</section>
+
+<!-- FAQ -->
+<section class="faq">
+<h2 class="sh">Frequently asked questions</h2>
+<p class="sub-h">Got questions? We've got answers.</p>
+
+<div class="faq-item" onclick="toggleFaq(this)">
+<div class="faq-q">How does ReviewBrain connect to my Google reviews?<span class="arrow">+</span></div>
+<div class="faq-a">You sign in with your Google Business account and grant ReviewBrain read access. We pull in your reviews automatically. Setup takes less than 2 minutes and we walk you through every step.</div>
+</div>
+<div class="faq-item" onclick="toggleFaq(this)">
+<div class="faq-q">How does the AI know what to write?<span class="arrow">+</span></div>
+<div class="faq-a">Our AI reads the full review text, the star rating, and your business type. It crafts a response that matches the tone &mdash; warm and grateful for positive reviews, empathetic and solution-focused for negative ones. Every reply sounds natural, not robotic.</div>
+</div>
+<div class="faq-item" onclick="toggleFaq(this)">
+<div class="faq-q">Can I edit the replies before sending?<span class="arrow">+</span></div>
+<div class="faq-a">Absolutely. Every AI-generated reply is a suggestion. You can edit it however you want, add your own personal touch, or rewrite it entirely. Nothing gets posted without your approval.</div>
+</div>
+<div class="faq-item" onclick="toggleFaq(this)">
+<div class="faq-q">What if I don't like the AI response?<span class="arrow">+</span></div>
+<div class="faq-a">Just click "Regenerate" and the AI will write a completely new reply. You can regenerate as many times as you want until you're happy with it. You can also edit any response manually.</div>
+</div>
+<div class="faq-item" onclick="toggleFaq(this)">
+<div class="faq-q">Do I need to be tech-savvy to use this?<span class="arrow">+</span></div>
+<div class="faq-a">Not at all. If you can check your email and click a button, you can use ReviewBrain. The whole point is to make review management dead simple for busy business owners, not tech experts.</div>
+</div>
+<div class="faq-item" onclick="toggleFaq(this)">
+<div class="faq-q">Does it work for Yelp and Facebook too?<span class="arrow">+</span></div>
+<div class="faq-a">Yes! ReviewBrain pulls reviews from Google, Yelp, and Facebook all into one dashboard. You manage everything from a single screen instead of jumping between three different sites.</div>
+</div>
+<div class="faq-item" onclick="toggleFaq(this)">
+<div class="faq-q">What happens after my free trial ends?<span class="arrow">+</span></div>
+<div class="faq-a">After your 14-day free trial, you can continue for just $19/month. No contracts, cancel anytime. If you cancel, you won't be charged again. We also offer a money-back guarantee if you're not satisfied.</div>
+</div>
+<div class="faq-item" onclick="toggleFaq(this)">
+<div class="faq-q">How is this different from BrightLocal or Podium?<span class="arrow">+</span></div>
+<div class="faq-a">Those tools are built for agencies managing 50+ locations and cost $44&ndash;$259/month. ReviewBrain is built specifically for single-location local businesses at a fraction of the price. Simple, focused, and actually affordable.</div>
+</div>
+</section>
+
+<!-- PRICING -->
+<section class="pricing">
+<h2 class="sh">Simple, affordable pricing</h2>
+<p class="sub-h">No hidden fees. No contracts. Just results.</p>
+<div class="pc">
+<div class="pc-badge">Early access pricing</div>
+<div class="old-price">$39/month</div>
+<div class="pa">$19<span>/month</span></div>
+<p class="pd">Lock in the early access price forever.<br>It goes up to $39 after launch.</p>
+<ul class="pl">
+<li>All Google, Yelp &amp; Facebook reviews in one dashboard</li>
+<li>Unlimited AI-generated replies</li>
+<li>Instant alerts for negative reviews</li>
+<li>Weekly performance summary email</li>
+<li>Track your rating over time</li>
+<li>Edit and approve every reply before sending</li>
+<li>Works for any type of local business</li>
+</ul>
+<div class="pt">14-day free trial &mdash; no credit card required</div>
+</div>
+</section>
+
+<!-- BOTTOM CTA -->
+<section class="cta">
+<h2 class="sh">Ready to stop losing customers to unanswered reviews?</h2>
+<p>Join the waitlist and be one of the first businesses to try ReviewBrain free.</p>
+<div class="fw" id="fa2">
+<form id="wf2" action="https://formspree.io/f/xyklkbzv" method="POST">
+<div class="fr"><input type="email" name="email" placeholder="you@yourbusiness.com" required /><button type="submit">Get early access</button></div>
+</form>
+</div>
+<div class="sm" id="sm2"><p>You're on the list! We'll be in touch soon.</p></div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact">
+<h2 class="sh">Questions? Let's talk.</h2>
+<p>I'm a real person building this for real local businesses. Don't hesitate to reach out.</p>
+<div class="cc">
+<div class="ccd"><div class="cl">Email</div><div class="cv"><a href="mailto:reviewbraniac@gmail.com">reviewbraniac@gmail.com</a></div></div>
+<div class="ccd"><div class="cl">Call or text</div><div class="cv"><a href="tel:+14062917319">(406) 291-7319</a></div></div>
+</div>
+</section>
+
+<!-- OTHER BUSINESSES -->
+<section class="other">
+<h2 class="sh">More from Grady Foster</h2>
+<p class="other-sub">Check out my other businesses serving Montana.</p>
+<div class="ob">
+<div class="obc">
+<h4>Foster's Mobile Detailing</h4>
+<div class="obd">Professional mobile auto detailing with steam cleaning. Serving Libby, Kalispell &amp; Whitefish, Montana.</div>
+<a href="https://fostersdetailing.com" target="_blank">fostersdetailing.com &#8594;</a>
+</div>
+<div class="obc">
+<h4>Foster's Websites</h4>
+<div class="obd">Custom website design and development for local businesses in Montana.</div>
+<a href="https://share.google/sMQ0E90OFvvmIcoaC" target="_blank">View on Google &#8594;</a>
+</div>
+</div>
+</section>
+
+<footer>
+<p class="fb">Built by Grady Foster <span class="ht">&#10084;</span> in Montana</p>
+<p class="fs">&copy; 2026 ReviewBrain &mdash; Helping local businesses take control of their online reputation</p>
+</footer>
+
+</div>
+
+<script>
+function setupForm(fId,aId,sId){var f=document.getElementById(fId);if(!f)return;f.addEventListener('submit',function(e){e.preventDefault();var em=f.querySelector('input[type="email"]').value.trim();if(!em||!em.includes('@')){f.querySelector('input[type="email"]').style.borderColor='#D44030';return;}fetch(f.action,{method:'POST',body:new FormData(f),headers:{'Accept':'application/json'}}).then(function(r){if(r.ok){document.getElementById(aId).style.display='none';document.getElementById(sId).style.display='block';}}).catch(function(){document.getElementById(aId).style.display='none';document.getElementById(sId).style.display='block';});})}
+setupForm('wf1','fa1','sm1');
+setupForm('wf2','fa2','sm2');
+
+function genReply(n){
+  var btn=document.getElementById('gb'+n);
+  var tp=document.getElementById('tp'+n);
+  var rp=document.getElementById('rp'+n);
+  if(btn.classList.contains('done'))return;
+  btn.style.display='none';
+  tp.style.display='block';
+  setTimeout(function(){
+    tp.style.display='none';
+    rp.style.display='block';
+    btn.textContent='Sent!';
+    btn.classList.add('done');
+    btn.style.display='inline-block';
+  },2200);
+}
+
+function switchTab(el,platform){
+  document.querySelectorAll('.demo-tab').forEach(function(t){t.classList.remove('active')});
+  el.classList.add('active');
+  var sources=document.querySelectorAll('.rv-dt');
+  sources.forEach(function(s){
+    var txt=s.textContent;
+    txt=txt.replace(/Google|Yelp|Facebook/,platform.charAt(0).toUpperCase()+platform.slice(1));
+    s.textContent=txt;
+  });
+}
+
+function toggleFaq(el){
+  var wasOpen=el.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(function(f){f.classList.remove('open')});
+  if(!wasOpen)el.classList.add('open');
+}
+</script>
+</body>
+</html>
